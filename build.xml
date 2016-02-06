@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<project name="SecureMessenger" default="ship-nokia-s60-en" basedir=".">
+
+
+   <!-- Implementation-independent project properties:
+        Directory names etc. -->
+   <target name="init">
+
+      <property name="config" value="config"/>
+      <property name="docs" value="docs"/>
+      <property name="lib" value="lib"/>
+      <property name="src" value="src"/>
+      <property name="build" value="classes"/>
+      <property name="obfuscate" value="obfuscate"/>
+      <property name="preverify" value="preverify"/>
+      <property name="preverifyoutput" value="output"/>
+      <property name="stage" value="staging"/>
+      <property name="ship" value="ship"/>
+      <property name="retroguardjar" value="../../../tools/retroguard1113/retroguard.jar"/>
+
+   </target>
+
+   <!-- Language-specific properties - English. -->
+   <target name="init_en">
+
+      <property name="languagedir" value="en"/> 
+
+   </target>
+
+   <!-- Language-specific properties - German. -->
+   <target name="init_de">
+
+      <property name="languagedir" value="de"/>
+
+   </target>
+
+
+   <!-- Implementation-specific properties:
+        Path to verifier, resources file. 
+        Name of the implementation pack. -->
+   <target name="init_nokia_s60">
+
+      <property name="midppreverifier" 
+                value="../../../java/nds20/Devices/Series_60_MIDP_SDK_for_Symbian_OS_v_1_2_1/bin/preverify"/>
+      <property name="midpjar" 
+                value="../../../java/nds20/Devices/Series_60_MIDP_SDK_for_Symbian_OS_v_1_2_1/lib/Series_60_MIDP_SDK_for_Symbian_OS_v_1_2_1/j2me-debug.zip"/>
+      <property name="impl" value="em/sm/impl/nokia/s60/**"/> 
+      <property name="jad" value="${config}/descriptor/nokia/s60/${languagedir}/SecureMessenger.jad"/>
+      <property name="resourcesdir" value="${config}/resources/nokia/s60/${languagedir}"/>
+      <property name="resourcesencoding" value="utf-8"/>
+
+   </target>
+
+   <!-- Implementation-specific properties:
+        Path to verifier, resources file. 
+        Name of the implementation pack. -->
+   <target name="init_siemens_m50">
+
+      <property name="midppreverifier" 
+                value="../Siemens/SMTK/M50_1b7/bin/preverify"/>
+      <property name="midpjar" 
+                value="../Siemens/SMTK/M50_1b7/lib/API.jar"/>
+      <property name="impl" value="em/sm/impl/siemens/m50/**"/> 
+      <property name="jad" value="${config}/descriptor/siemens/m50/${languagedir}/SecureMessenger.jad"/>
+      <property name="resourcesdir" value="${config}/resources/siemens/m50/${languagedir}"/>
+      <property name="resourcesencoding" value="iso-8859-1"/>
+
+   </target>
+
+   <!-- Implementation-specific properties:
+        Path to verifier, resource file.
+        Name of the implementation pack. -->
+   <target name="init_siemens_sl45i">
+
+      <property name="midppreverifier" 
+                value="../Siemens/SMTK/SL45i_1b8/bin/preverify"/>
+      <property name="midpjar" 
+                value="../Siemens/SMTK/SL45i_1b8/lib/API.jar"/>
+      <property name="impl" value="em/sm/impl/siemens/sl45i/**"/> 
+      <property name="jad" value="${config}/descriptor/siemens/sl45i/${languagedir}/SecureMessenger.jad"/>
+      <property name="resourcesdir" value="${config}/resources/siemens/sl45i/${languagedir}"/>
+      <property name="resourcesencoding" value="iso-8859-1"/>
+
+   </target>
+
+
+   <!-- Cleans directories: 
+        removes result of previous build 
+        Note: this is implementation-independent. -->
+   <target name="clean" depends="init">
+
+       <delete dir="${build}"/>
+       <delete dir="${stage}"/>
+       <delete dir="${preverify}"/>
+       <delete dir="${preverifyoutput}"/>
+       <delete dir="${obfuscate}"/>
+       <delete dir="${ship}"/>
+       <delete file="retroguard.log"/>
+
+   </target>
+
+
+   <!-- Compilation with debug info switched off. -->
+   <target name="compile">
+
+       <!-- Create the build directory -->
+       <mkdir dir="${build}"/>
+       <mkdir dir="${obfuscate}"/>
+
+       <!-- Compile the source -->
+       <javac srcdir="${src}"
+           destdir="${build}"
+           debug="off"
+           deprecation="off"
+           includes="em/sm/api/**,
+                     em/sm/util/**,
+                     em/sm/ui/**,
+                     em/sm/localization/**,
+                     ${impl}">
+           <classpath>
+               <pathelement path="${midpjar}"/>
+           </classpath>
+       </javac>
+
+       <!-- Create the jar file -->
+       <!-- Note: Exclude the localization utility, so we can still 
+            use it in the build process, but it will not be the part 
+            of the distribution. -->
+       <jar basedir="${build}" 
+            jarfile="${obfuscate}/SecureMessenger.jar"
+            excludes="em/sm/localization/**"/>
+
+   </target>
+
+   
+   <!-- Implementation of the obfuscation -->
+   <target name="obfuscate" depends="compile">
+
+      <mkdir dir="preverify"/>
+
+      <!-- Create the resource file from the Properties file -->
+      <java classname="RetroGuard" fork="yes">
+         <arg value="${obfuscate}/SecureMessenger.jar"/>
+         <arg value="${preverify}/SecureMessengerObfuscated.jar"/>
+         <arg value="${config}/obfuscation/ignore.rgs"/>
+         <classpath>
+             <pathelement path="${midpjar}"/>
+             <pathelement path="${retroguardjar}"/>
+         </classpath>
+      </java> 
+
+   </target>
+
+
+   <!-- Preverify the content of the ${build} -->
+   <target name="preverify" depends="obfuscate">
+
+      <mkdir dir="${ship}"/>
+
+      <!-- Preverify                                        -->
+      <exec executable="${midppreverifier}">
+        <arg line="-classpath"/>
+        <arg line="${midpjar};${preverify}/SecureMessengerObfuscated.jar"/>
+        <arg line="${preverify}/SecureMessengerObfuscated.jar"/>
+        <arg line="-d ${preverifyoutput}/SecureMessengerObfuscated.jar"/>
+      </exec>
+
+   </target>
+
+
+   <!-- Assemble the distribution package           
+        Assembly include the english resource file, 
+        JAD and JAR files -->
+   <target name="assemble" depends="preverify">
+
+      <!-- Create the directories --> 
+      <mkdir dir="${stage}"/>
+      <mkdir dir="${ship}"/>
+
+      <!-- Extract the preverified classes and add the resource file -->
+      <unjar src="${basedir}/output/SecureMessengerObfuscated.jar"
+             dest="${stage}"/>
+
+      <!-- Create the resource file from the Properties file -->
+      <java classname="em.sm.localization.PropertiesToResource">
+         <arg value="${resourcesencoding}"/>
+         <arg value="${resourcesdir}/resources.txt"/>
+         <arg value="${stage}/em/sm/ui/resources.bin"/>
+         <classpath>
+             <pathelement path="${build}"/>
+         </classpath>
+      </java> 
+
+      <!-- Re-assemble the jar file including proper manifest -->
+      <jar basedir="${stage}" 
+           manifest="${config}/manifest/Manifest.mf"
+           jarfile="${ship}/SecureMessenger.jar"/>
+
+      <!-- Copy the jad file -->
+      <copy file="${jad}" 
+            tofile="${ship}/SecureMessenger.jad"/>
+
+   </target>
+
+
+   <!-- Siemens SL45i build target - English -->
+   <target name="ship-siemens-sl45i-en" depends="init, init_en, init_siemens_sl45i, assemble">
+   </target>
+
+   <!-- Siemens SL45i build target - German -->
+   <target name="ship-siemens-sl45i-de" depends="init, init_de, init_siemens_sl45i, assemble">
+   </target>
+
+   <!-- Siemens M50 build target - English -->
+   <target name="ship-siemens-m50-en" depends="init, init_en, init_siemens_m50, assemble">
+   </target>
+
+   <!-- Siemens M50 build target - German -->
+   <target name="ship-siemens-m50-de" depends="init, init_de, init_siemens_m50, assemble">
+   </target>
+
+   <!-- Nokia S60 build target - English -->
+   <target name="ship-nokia-s60-en" depends="init, init_en, init_nokia_s60, assemble">
+   </target>
+
+   <!-- Nokia S60 build target - German -->
+   <target name="ship-nokia-s60-de" depends="init, init_de, init_nokia_s60, assemble">
+   </target>
+
+</project>

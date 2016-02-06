@@ -1,0 +1,4 @@
+.class em/sm/impl/siemens/m50/SiemensObjectFactory
+.class em/sm/impl/siemens/sl45i/SiemensObjectFactory
+.class em/sm/impl/nokia/s60/NokiaObjectFactory
+.class em/sm/ui/SecureMessenger

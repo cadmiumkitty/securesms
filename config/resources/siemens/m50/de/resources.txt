@@ -1,0 +1,41 @@
+# The ObjectFactory for the M50 implementation of the SecureMessenger
+0=em.sm.impl.siemens.m50.SiemensObjectFactory
+
+# Button names and messages - Deutsch
+1=Speichern
+2=Senden
+3=Antworten
+4=Löschen
+5=Hinzufügen
+6=Abbrechen
+7=Ausgang
+10=SecureMessenger
+11=Eingang
+12=Sende Neu
+13=Sende Objekt
+14=Addressbuch
+20=Nachricht
+21=Addresse
+22=Neue Addresse
+23=Neue Nachricht
+24=Text:
+25=Empfänger:
+26=Absender:
+27=Nummer:
+28=Name:
+29=Schlüssel (Hex):
+30=Nachricht versendet
+31=Nachricht nicht gesendet
+32=Nachricht gelöscht
+33=Nachricht nicht gelöscht
+34=Neue Nachricht!
+35=Addresse gespeichert
+36=Addresse nicht gespeichert
+37=Addresse gelöscht
+38=Addresse nicht gelöscht
+39=Fehler!
+40=Info
+41=Nachrichtenspeicher Fehler
+42=Adressenspeicher Fehler
+43=Kann SerureMessenger nicht starten
+

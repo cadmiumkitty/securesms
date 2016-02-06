@@ -1,0 +1,40 @@
+# The ObjectFactory for the SL45i implementation of the SecureMessenger
+0=em.sm.impl.siemens.m50.SiemensObjectFactory
+
+# Button names and messages - English
+1=Save
+2=Send
+3=Reply
+4=Delete
+5=Add
+6=Cancel
+7=Exit
+10=SecureMessenger
+11=Inbox
+12=Send New
+13=Sent Items
+14=Address Book
+20=Message
+21=Address
+22=New Address
+23=New Message
+24=Text:
+25=To:
+26=From:
+27=Number:
+28=Name:
+29=Key (Hex):
+30=Message sent
+31=Message has not been sent
+32=Message deleted
+33=Message has not been deleted
+34=You've got message!
+35=Address saved
+36=Address has not been saved
+37=Address deleted
+38=Address has not been deleted
+39=Error
+40=Info
+41=Message store error
+42=Address store error
+43=Can not start the SerureMessenger
