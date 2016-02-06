@@ -18,21 +18,21 @@ SecureMessenger consists of common API, three implementations of that API (for S
 
 To build the SecureMessenger you will need:
 
- 1 JDK 1.3.1 or higher (tested with JDK 1.4.1_05-b01)
- 1 Siemens Mobility Toolkit (M50 or SL45i versions) to build Siemens 
+ 1. JDK 1.3.1 or higher (tested with JDK 1.4.1_05-b01)
+ 1. Siemens Mobility Toolkit (M50 or SL45i versions) to build Siemens 
  version of SecureMessenger
- 1 Nokia Series 60 MIDP SDK for Symbian OS v 1.2.1 or higher to build Nokia 
+ 1. Nokia Series 60 MIDP SDK for Symbian OS v 1.2.1 or higher to build Nokia 
  Series 60 version of SecureMessenger
- 1 ANT 1.5.4
- 1 Retroguard 1.1.13
+ 1. ANT 1.5.4
+ 1. Retroguard 1.1.13
    
 ## How to build
 
 Download and unpack the zip file.
 
 Tweak the build.xml
- 1 Replace path to the retroguard.jar
- 1 Replace path to the preverifiers/APIs of the Siemens/Nokia SDKs
+ 1. Replace path to the retroguard.jar
+ 1. Replace path to the preverifiers/APIs of the Siemens/Nokia SDKs
 
 Default target is ship-nokia-s60-en which builds English-language version of 
 SecureMessenger to run on Nokia Series 60. Other available targets 
@@ -70,13 +70,13 @@ encryption/decryption and storing keys for addresses in the phones's address boo
 
 ## Known problems, To do
 
- 1 THIS SOFTWARE HAS NOT BEEN TESTED ON REAL NOKIA SERIES 60.
- 1 JAR file size declared in JAD may not match the actual JAR file size which 
+ 1. THIS SOFTWARE HAS NOT BEEN TESTED ON REAL NOKIA SERIES 60.
+ 1. JAR file size declared in JAD may not match the actual JAR file size which 
  depends on compiler version that you use.
- 1 User's manual is to be done.
- 1 Encoding name is not currently included into the included into the resources 
+ 1. User's manual is to be done.
+ 1. Encoding name is not currently included into the included into the resources 
  file, but it should be.
- 1 Currently the keys should be typed in manually, No key exchange mechanism 
+ 1. Currently the keys should be typed in manually, No key exchange mechanism 
  implemented, but API is there (preferred mechanism of the key exchange is 
  via IR probably).
 
